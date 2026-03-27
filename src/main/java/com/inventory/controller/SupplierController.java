@@ -1,6 +1,7 @@
 package com.inventory.controller;
 
 import com.inventory.dto.response.ApiResponse;
+import com.inventory.dto.response.SupplierResponse;
 import com.inventory.entity.Supplier;
 import com.inventory.service.SupplierService;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +19,8 @@ public class SupplierController {
     private final SupplierService supplierService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<Supplier>>> getAllSuppliers() {
-        return ResponseEntity.ok(ApiResponse.success(supplierService.getAllSuppliers()));
+    public ResponseEntity<ApiResponse<List<SupplierResponse>>> getAllSuppliers() {
+        return ResponseEntity.ok(ApiResponse.success(supplierService.getAllSupplierResponses()));
     }
 
     @GetMapping("/{id}")

@@ -1,7 +1,10 @@
 package com.inventory.service;
 
+import com.inventory.dto.response.SupplierResponse;
 import com.inventory.entity.Supplier;
+import com.inventory.exception.DuplicateResourceException;
 import com.inventory.exception.ResourceNotFoundException;
+import com.inventory.mapper.SupplierMapper;
 import com.inventory.repository.SupplierRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,12 @@ public class SupplierService {
         return supplierRepository.findAll();
     }
 
+    public List<SupplierResponse> getAllSupplierResponses() {
+        return supplierRepository.findAll().stream()
+                .map(SupplierMapper::toSupplierResponse)
+                .toList();
+    }
+
     public Supplier getSupplierById(Long id) {
         return supplierRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Supplier", "id", id));
@@ -26,6 +35,12 @@ public class SupplierService {
 
     @Transactional
     public Supplier createSupplier(Supplier supplier) {
+        if (supplierRepository.existsByCompanyName(supplier.getCompanyName())) {
+            throw new DuplicateResourceException("Supplier with company name '" + supplier.getCompanyName() + "' already exists");
+        }
+        if (supplierRepository.existsByEmail(supplier.getEmail())) {
+            throw new DuplicateResourceException("Supplier with email '" + supplier.getEmail() + "' already exists");
+        }
         return supplierRepository.save(supplier);
     }
 

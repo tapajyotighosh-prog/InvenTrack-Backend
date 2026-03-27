@@ -4,6 +4,8 @@ import com.inventory.entity.Category;
 import com.inventory.exception.DuplicateResourceException;
 import com.inventory.exception.ResourceNotFoundException;
 import com.inventory.repository.CategoryRepository;
+import com.inventory.dto.response.CategoryResponse;
+import com.inventory.mapper.CategoryMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,8 +18,16 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
+    @Transactional(readOnly = true)
     public List<Category> getAllCategories() {
         return categoryRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<CategoryResponse> getAllCategoryResponses() {
+        return categoryRepository.findAll().stream()
+                .map(CategoryMapper::toCategoryResponse)
+                .toList();
     }
 
     public List<Category> getRootCategories() {
@@ -27,6 +37,11 @@ public class CategoryService {
     public Category getCategoryById(Long id) {
         return categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "id", id));
+    }
+
+    public CategoryResponse getCategoryResponseById(Long id) {
+        Category category = getCategoryById(id);
+        return CategoryMapper.toCategoryResponse(category);
     }
 
     @Transactional
