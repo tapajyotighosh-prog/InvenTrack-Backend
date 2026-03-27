@@ -1,6 +1,7 @@
 package com.inventory.controller;
 
 import com.inventory.dto.response.ApiResponse;
+import com.inventory.dto.response.CategoryResponse;
 import com.inventory.entity.Category;
 import com.inventory.service.CategoryService;
 import lombok.RequiredArgsConstructor;
@@ -18,13 +19,13 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<Category>>> getAllCategories() {
-        return ResponseEntity.ok(ApiResponse.success(categoryService.getAllCategories()));
+    public ResponseEntity<ApiResponse<List<CategoryResponse>>> getAllCategories() {
+        return ResponseEntity.ok(ApiResponse.success(categoryService.getAllCategoryResponses()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Category>> getCategoryById(@PathVariable Long id) {
-        return ResponseEntity.ok(ApiResponse.success(categoryService.getCategoryById(id)));
+    public ResponseEntity<ApiResponse<CategoryResponse>> getCategoryById(@PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.success(categoryService.getCategoryResponseById(id)));
     }
 
     @PostMapping

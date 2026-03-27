@@ -94,6 +94,7 @@ public class ProductService {
         product.setUnitPrice(request.getUnitPrice());
         product.setCostPrice(request.getCostPrice());
         product.setReorderLevel(request.getReorderLevel());
+        product.setQuantity(request.getQuantity());
         product.setImageUrl(request.getImageUrl());
         product.setBarcode(request.getBarcode());
 
